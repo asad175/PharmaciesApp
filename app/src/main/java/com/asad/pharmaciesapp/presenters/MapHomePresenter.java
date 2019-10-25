@@ -31,6 +31,8 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
     final String TAG_FETCH_DIRECTIONS = "Directions";
     Location userCurrentLocation = null;
 
+    public boolean routeDrawn = false;
+
     ArrayList<Pharmacy> pharmaciesList = new ArrayList<>();
 
 
@@ -56,8 +58,11 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
     }
 
     void fetchNearestPharmacies() {
-        if (userCurrentLocation != null)
+        if (userCurrentLocation != null) {
+            uiListener.removePolyline();
+            uiListener.clearMap();
             apiManager.ExecuteVolleyRequest(TAG_FETCH_PHARMACIES, Constants.SearchPlacesBaseUrl + "&location=" + userCurrentLocation.getLatitude() + "," + userCurrentLocation.getLongitude());
+        }
     }
 
     public void fetchDirectionPolygon(Marker marker) {
@@ -73,6 +78,7 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
     @Override
     public void onLocationChanged(Location location) {  // listener called by LocationHelper
         userCurrentLocation = location;
+
         fetchNearestPharmacies();
     }
 
@@ -90,6 +96,7 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
             addMarkersToMap();
         } else if (tag.equals(TAG_FETCH_DIRECTIONS)) {
             PolylineOptions polyline =  Parser.parseDirectionsJsonPolyline(response);
+            routeDrawn = true;
             uiListener.drawRouteOnMap(polyline);
 //            uiListener.moveMapToCurrentLocation(new LatLng(userCurrentLocation.getLatitude(),userCurrentLocation.getLongitude()),13.0f);
         }
@@ -114,6 +121,11 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
             markerOptions.position(new LatLng(pharmacy.getLat(),pharmacy.getLng()));
             markerOptions.title(pharmacy.getName());
             uiListener.addMarkerOnMap(markerOptions);
+        }
+
+        if (routeDrawn) { // if already route was drawn, then draw it again after fetching the markers, if user's location was changed previously
+            Marker selectedMarker = uiListener.getSelectedMarker();
+            if (selectedMarker != null) fetchDirectionPolygon(selectedMarker);
         }
     }
 

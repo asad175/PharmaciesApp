@@ -1,6 +1,7 @@
 package com.asad.pharmaciesapp.interfaces;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -12,4 +13,7 @@ public interface IMapHomeActivity {
     void addMarkerOnMap(MarkerOptions marker);
     void removeAllMarkers();
     void drawRouteOnMap(PolylineOptions polyline);
+    Marker getSelectedMarker();
+    void clearMap();
+    void removePolyline();
 }

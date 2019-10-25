@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
 
+import com.asad.pharmaciesapp.R;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -53,9 +55,9 @@ public class PermissionHelper {
 
     private void showEnableLocationDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(context)
-                .setTitle("Location Permission Required")
-                .setMessage("Please Provide Location Permission")
-                .setPositiveButton("APP Settings", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.permission_required)
+                .setMessage(R.string.please_provide_permission)
+                .setPositiveButton(R.string.app_settings, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // send to app settings if permissions are not enabled

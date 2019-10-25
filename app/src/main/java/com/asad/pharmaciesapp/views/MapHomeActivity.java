@@ -73,7 +73,7 @@ public class MapHomeActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public boolean onMarkerClick(Marker marker) {
         selectedMarker = marker;
-        if (drawnPolyline != null) drawnPolyline.remove();
+        removePolyline();
         showCallOutView();
         return false;
     }
@@ -114,6 +114,22 @@ public class MapHomeActivity extends AppCompatActivity implements OnMapReadyCall
         if (mMap == null) return;
         drawnPolyline = mMap.addPolyline(polyline);
 
+    }
+
+    @Override
+    public void clearMap() {
+
+    }
+
+    @Override
+    public Marker getSelectedMarker() {
+        return selectedMarker;
+    }
+
+    @Override
+    public void removePolyline() {
+        if (drawnPolyline != null) drawnPolyline.remove();
+        presenter.routeDrawn = false;
     }
 
     public void GoClick(View v) {

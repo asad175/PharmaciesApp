@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pharmacies App</string>
+    <string name="google_api_key">AIzaSyDHg9vKhli-IMONvEu6pwrRjMMmUK2dN-g</string>
+    <string name="problem_occurred">مسلہ آ گیا</string>
+    <string name="go">چلو</string>
+    <string name="permission_required">مقام کی اجازت نہیں</string>
+    <string name="app_settings"> ترتیبات</string>
+    <string name="please_provide_permission">مقام دے کی اجازت اجازت</string>
+
+</resources>

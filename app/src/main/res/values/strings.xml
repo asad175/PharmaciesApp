@@ -3,6 +3,10 @@
     <string name="google_api_key">AIzaSyDHg9vKhli-IMONvEu6pwrRjMMmUK2dN-g</string>
     <string name="problem_occurred">Problem Occurred</string>
     <string name="go">Go</string>
+    <string name="permission_required">Location Permission Required</string>
+    <string name="app_settings">App Settings</string>
+    <string name="please_provide_permission">Please Provide Location Permission</string>
+
 
 
 </resources>
