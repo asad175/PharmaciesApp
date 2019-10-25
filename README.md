@@ -13,10 +13,10 @@ But I didn't use any other third party SDK or libraries, except taking a small c
 
 Details:
 
-This App only contain 1 Activiy named "MapHomeActivity". It has its presenter named "MapHomePresenter" in which business logic is implemented. Presenter updates Activity component through the Interface named "IMapHomeActivity".
+This App only contains 1 Activity named "MapHomeActivity". It has its presenter named "MapHomePresenter" in which business logic is implemented. Presenter updates Activity component through the Interface named "IMapHomeActivity".
 
 Instead of these, some other Helper classes are created, like "LocationHelper" to observe user location and send updates to presenter through an interface. Same is the case with another Helper class named "PermissionHelper".
 
-Another Utility class "Parser "is used to parse json objects into required formatted objects.
+Another Utility class "Parser "is used to parse JSON objects into required formatted objects.
 
-All API calls are being done through ApiManager class, which works as a network layer.
+All API calls are being done through "ApiManager" class, which works as a network layer.
