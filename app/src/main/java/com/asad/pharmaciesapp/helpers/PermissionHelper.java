@@ -1,4 +1,4 @@
-package com.asad.pharmaciesapp.utils;
+package com.asad.pharmaciesapp.helpers;
 
 import android.Manifest;
 import android.app.Activity;

@@ -2,22 +2,19 @@ package com.asad.pharmaciesapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.asad.pharmaciesapp.R;
 import com.asad.pharmaciesapp.interfaces.IMapHomeActivity;
 import com.asad.pharmaciesapp.presenters.MapHomePresenter;
-import com.asad.pharmaciesapp.utils.PermissionHelper;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MapHomeActivity extends AppCompatActivity implements OnMapReadyCallback, IMapHomeActivity {
 
@@ -36,8 +33,6 @@ public class MapHomeActivity extends AppCompatActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
 
     }
 

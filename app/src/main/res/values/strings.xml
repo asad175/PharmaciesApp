@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Pharmacies App</string>
+    <string name="google_api_key">AIzaSyDHg9vKhli-IMONvEu6pwrRjMMmUK2dN-g</string>
 
 </resources>
