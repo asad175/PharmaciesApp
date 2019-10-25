@@ -21,6 +21,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,8 @@ public class MapHomeActivity extends AppCompatActivity implements OnMapReadyCall
 
     RelativeLayout calloutLayout;
     TextView calloutTitle;
+    Marker selectedMarker;
+    Polyline drawnPolyline;
 
 
     @Override
@@ -68,7 +72,9 @@ public class MapHomeActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        showCallOutView(marker);
+        selectedMarker = marker;
+        if (drawnPolyline != null) drawnPolyline.remove();
+        showCallOutView();
         return false;
     }
 
@@ -91,7 +97,7 @@ public class MapHomeActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @Override
-    public void moveMapToCurrentLocation(LatLng latLng) {
+    public void moveMapToCurrentLocation(LatLng latLng, float zoom) {
         if (mMap == null) return;
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13.0f));
@@ -103,12 +109,20 @@ public class MapHomeActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.clear();
     }
 
-    public void GoClick(View v) {
+    @Override
+    public void drawRouteOnMap(PolylineOptions polyline) {
+        if (mMap == null) return;
+        drawnPolyline = mMap.addPolyline(polyline);
 
     }
 
-    void showCallOutView(Marker marker) {
-        calloutTitle.setText(marker.getTitle());
+    public void GoClick(View v) {
+        calloutLayout.setVisibility(View.GONE);
+        presenter.fetchDirectionPolygon(selectedMarker);
+    }
+
+    void showCallOutView() {
+        calloutTitle.setText(selectedMarker.getTitle());
         calloutLayout.setVisibility(View.VISIBLE);
     }
 }

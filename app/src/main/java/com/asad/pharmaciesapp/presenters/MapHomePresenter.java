@@ -14,7 +14,9 @@ import com.asad.pharmaciesapp.helpers.PermissionHelper;
 import com.asad.pharmaciesapp.service.Parser;
 import com.asad.pharmaciesapp.utils.Constants;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
@@ -25,7 +27,8 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
     LocationHelper locationHelper;
     PermissionHelper permissionHelper;
     ApiManager apiManager;
-    final String TAG = "MapHomePresenter";
+    final String TAG_FETCH_PHARMACIES = "Pharmacies";
+    final String TAG_FETCH_DIRECTIONS = "Directions";
     Location userCurrentLocation = null;
 
     ArrayList<Pharmacy> pharmaciesList = new ArrayList<>();
@@ -54,7 +57,12 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
 
     void fetchNearestPharmacies() {
         if (userCurrentLocation != null)
-            apiManager.ExecuteVolleyRequest(TAG, Constants.SearchPlacesBaseUrl + "&location=" + userCurrentLocation.getLatitude() + "," + userCurrentLocation.getLongitude());
+            apiManager.ExecuteVolleyRequest(TAG_FETCH_PHARMACIES, Constants.SearchPlacesBaseUrl + "&location=" + userCurrentLocation.getLatitude() + "," + userCurrentLocation.getLongitude());
+    }
+
+    public void fetchDirectionPolygon(Marker marker) {
+        if (userCurrentLocation != null)
+            apiManager.ExecuteVolleyRequest(TAG_FETCH_DIRECTIONS, Constants.GetDirectionsUrl + "&origin=" + userCurrentLocation.getLatitude() + "," + userCurrentLocation.getLongitude() + "&destination=" + marker.getPosition().latitude + "," + marker.getPosition().longitude);
     }
 
     public boolean canMapEnableCurrentLocation() {
@@ -78,15 +86,14 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
     public void onApiSuccessResponse(String tag, String response) {  // Listener called by APIManager
 
         pharmaciesList = Parser.parsePharmaciesJsonToArrayList(response);
-        // add markers on map through activity interface
-        uiListener.removeAllMarkers();
-        uiListener.moveMapToCurrentLocation(new LatLng(userCurrentLocation.getLatitude(),userCurrentLocation.getLongitude()));
-        for (Pharmacy pharmacy: pharmaciesList) {
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(new LatLng(pharmacy.getLat(),pharmacy.getLng()));
-            markerOptions.title(pharmacy.getName());
-            uiListener.addMarkerOnMap(markerOptions);
+        if (tag.equals(TAG_FETCH_PHARMACIES)){
+            addMarkersToMap();
+        } else if (tag.equals(TAG_FETCH_DIRECTIONS)) {
+            PolylineOptions polyline =  Parser.parseDirectionsJsonPolyline(response);
+            uiListener.drawRouteOnMap(polyline);
+//            uiListener.moveMapToCurrentLocation(new LatLng(userCurrentLocation.getLatitude(),userCurrentLocation.getLongitude()),13.0f);
         }
+
     }
     @Override
     public void onApiErrorResponse(String tag) { // Listener called by APIManager in case of API error
@@ -97,6 +104,18 @@ public class MapHomePresenter implements LocationHelper.MyLocationListener, Perm
         permissionHelper.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 
+
+    void addMarkersToMap() {
+        // add markers on map through activity interface
+        uiListener.removeAllMarkers();
+        uiListener.moveMapToCurrentLocation(new LatLng(userCurrentLocation.getLatitude(),userCurrentLocation.getLongitude()),13.0f);
+        for (Pharmacy pharmacy: pharmaciesList) {
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(new LatLng(pharmacy.getLat(),pharmacy.getLng()));
+            markerOptions.title(pharmacy.getName());
+            uiListener.addMarkerOnMap(markerOptions);
+        }
+    }
 
 
 
